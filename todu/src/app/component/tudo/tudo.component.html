@@ -1,0 +1,36 @@
+<nz-table #rowSelectionTable [nzPageSize]="10" [nzTotal]="tudos.length" nzShowPagination nzShowSizeChanger [nzData]="tudos"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    <thead>
+        <tr>
+            <th></th>
+            <th>title</th>
+            <th>username</th>
+            <th>createTime</th>
+            <th>level</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of listOfCurrentPageData" (click)="showModal(data)">
+            <td [nzChecked]="data.isFinish" (click)="clickChecked($event)" [nzDisabled]="username!=data.username" (nzCheckedChange)="onItemChecked($event,data.id)"></td>
+            <td>{{ data.title }}</td>
+            <td>{{ data.username }}</td>
+            <td>{{ data.createTime | date:'MMM d, y, h:mm:ss a'}}</td>
+            <td>{{ data.level}}</td>
+        </tr>
+    </tbody>
+</nz-table>
+<nz-modal [(nzVisible)]="isVisible" [nzCancelText]="null" [nzOkText]="null" [nzOkDisabled]="username!=targetTudo.username" nzTitle="任务详情" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+        <input style="margin-bottom: 10px;" *ngIf="username===targetTudo.username" nz-input placeholder="Basic usage" [(ngModel)]="targetTudo.title" />
+        <p style="margin-left: 12px;" *ngIf="username!=targetTudo.username">{{targetTudo.title}}</p>
+        <p style="margin-left: 12px;">{{targetTudo.username}}</p>
+        <p style="margin-left: 12px;">{{targetTudo.createTime | date:'MMM d, y, h:mm:ss a'}}</p>
+        <span (click)="minusLeave()" *ngIf="username===targetTudo.username" style="cursor: pointer; margin-left: 12px;" nz-icon nzType="minus" nzTheme="outline"></span>
+        <p style=" display: inline-block;margin-left: 12px;">{{targetTudo.level}}</p>
+        <span (click)="addLeave()" *ngIf="username===targetTudo.username" style="cursor: pointer; margin-left: 10px;" nz-icon nzType="plus" nzTheme="outline"></span>
+    </ng-container>
+    <div *nzModalFooter>
+        <button [disabled]="username!=targetTudo.username" nz-button nzType="primary" (click)="saveTheTudo()">保存</button>
+        <button [disabled]="username!=targetTudo.username" nzDanger nz-button nzType="primary" (click)="handleOk()">删除</button>
+      </div>
+</nz-modal>

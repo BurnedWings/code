@@ -1,0 +1,19 @@
+<nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <input nz-input placeholder="请输入用户名" [(ngModel)]="usernaem" />
+  </ng-container>
+</nz-modal>
+<ng-container *ngIf="!isVisible" >
+  <ul nz-menu nzMode="horizontal">
+    <li nz-menu-item nzMatchRouter>
+      <a [routerLink]="['/tudos']" >tudus</a>
+    </li>
+    <li nz-menu-item nzMatchRouter>
+      <a [routerLink]="['/myTudos']">my todus</a>
+    </li>
+    <li nz-menu-item nzMatchRouter>
+      <a [routerLink]="['/otherTudos']">other todus</a>
+    </li>
+  </ul>
+  <router-outlet></router-outlet>
+</ng-container>
